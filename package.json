@@ -1,0 +1,36 @@
+{
+  "name": "aoc",
+  "version": "1.0.0",
+  "description": "advent of code",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magda98/AOC.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Magda98/AOC/issues"
+  },
+  "homepage": "https://github.com/Magda98/AOC#readme",
+  "dependencies": {
+    "@types/lodash-es": "^4.17.6",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "lodash-es": "^4.17.21",
+    "mathjs": "^11.4.0",
+    "typescript": "^4.9.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "tsx": "^3.12.1"
+  }
+}
