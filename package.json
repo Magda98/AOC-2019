@@ -2,6 +2,7 @@
   "name": "aoc",
   "version": "1.0.0",
   "description": "advent of code",
+  "type": "module",
   "scripts": {},
   "repository": {
     "type": "git",
@@ -15,6 +16,7 @@
   "homepage": "https://github.com/Magda98/AOC#readme",
   "dependencies": {
     "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.11.9",
     "eslint-import-resolver-typescript": "^3.5.2",
     "lodash-es": "^4.17.21",
     "mathjs": "^11.4.0",
