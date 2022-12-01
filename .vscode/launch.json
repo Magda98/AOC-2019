@@ -10,7 +10,8 @@
             "name": "Launch Program",
             "runtimeArgs": [
                 "--loader",
-                "tsx"
+                "tsx",
+                "--no-warnings"
             ],
             "skipFiles": [
                 "<node_internals>/**"
