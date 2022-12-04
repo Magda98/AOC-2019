@@ -2,16 +2,14 @@
 import fs from 'fs';
 import { countBy } from 'lodash-es';
 
-
 const filepath = new URL('day2.txt', import.meta.url);
 const data = await fs.promises.readFile(filepath, 'utf8');
 
 const input = data.split('\n');
-const movesObject = countBy(input)
-
+const movesObject = countBy(input);
 
 let totalScore = 0;
-for (const [key, value] of Object.entries(movesObject)) {
+Object.entries(movesObject).forEach(([key, value]) => {
   switch (key) {
     case 'A X':
       totalScore += (1 + 3) * value;
@@ -21,7 +19,7 @@ for (const [key, value] of Object.entries(movesObject)) {
       break;
     case 'A Z':
       totalScore += 3 * value;
-      break
+      break;
     case 'B X':
       totalScore += value;
       break;
@@ -33,20 +31,22 @@ for (const [key, value] of Object.entries(movesObject)) {
       break;
     case 'C X':
       totalScore += (1 + 6) * value;
-      break
+      break;
     case 'C Y':
       totalScore += 2 * value;
       break;
     case 'C Z':
-      totalScore += (3 + 3) * value
+      totalScore += (3 + 3) * value;
+      break;
+    default:
       break;
   }
-}
+});
 // part one answer
 console.log(totalScore);
 
 let totalScorePartTwo = 0;
-for (const [key, value] of Object.entries(movesObject)) {
+Object.entries(movesObject).forEach(([key, value]) => {
   switch (key) {
     case 'A X':
       totalScorePartTwo += 3 * value;
@@ -56,7 +56,7 @@ for (const [key, value] of Object.entries(movesObject)) {
       break;
     case 'A Z':
       totalScorePartTwo += (2 + 6) * value;
-      break
+      break;
     case 'B X':
       totalScorePartTwo += value;
       break;
@@ -68,14 +68,17 @@ for (const [key, value] of Object.entries(movesObject)) {
       break;
     case 'C X':
       totalScorePartTwo += 2 * value;
-      break
+      break;
     case 'C Y':
       totalScorePartTwo += (3 + 3) * value;
       break;
     case 'C Z':
-      totalScorePartTwo += (1 + 6) * value
+      totalScorePartTwo += (1 + 6) * value;
+      break;
+    default:
       break;
   }
-}
+});
+
 // part two answer
 console.log(totalScorePartTwo);
