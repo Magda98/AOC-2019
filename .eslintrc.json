@@ -23,6 +23,12 @@
         "import"
     ],
     "rules": {
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "max-len": [
+            "warn",
+            {
+                "code": 120
+            }
+        ]
     }
 }
