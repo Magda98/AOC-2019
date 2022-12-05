@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import fs from 'fs';
-import { chunk } from 'lodash-es';
+import { chunk, zip } from 'lodash-es';
 
 const filepath = new URL('day5.txt', import.meta.url);
 const data = await fs.promises.readFile(filepath, 'utf8');
@@ -12,9 +12,11 @@ const stack = stackStrings.map((row) => {
   return chunks.map((c) => c.at(1));
 }).slice(0, -1);
 
-const cargoCrane = stack[0].map((_, colIndex) => (
-  [...stack.map((row) => row[colIndex]).filter((cell) => cell !== ' ')].reverse()
-));
+function tranpose(matrix: any[]) {
+  return zip(...matrix);
+}
+
+const cargoCrane = tranpose(stack).map((row) => row.filter((cell) => cell !== ' ').reverse());
 
 function moveCargo(count: number, from: number, to: number) {
   // part one
