@@ -1,4 +1,3 @@
-# AOC
-## Advent of Code
+# 🎄 Advent of Code
 
-Advent of Code is an annual set of Christmas-themed computer programming challenges that follow an Advent calendar and can be solved using any programming language. In this repo it is solved using Python.
+Advent of Code is an annual set of Christmas-themed computer programming challenges that follow an Advent calendar and can be solved using any programming language. In this repo it is solved using Python or TypeScript each yer in separate branch.
