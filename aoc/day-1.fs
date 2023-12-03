@@ -45,7 +45,8 @@ let rec sumOfNumbersFromString (sum: int, list: list<string>) =
         sumOfNumbersFromString (partialSum + sum, t)
 
 
-let x = readLines ("./day-1.txt")
-let numbersSum = sumOfNumbersFromString (0, Seq.toList (x))
+
+let day1Input = readLines ("./day-1.txt")
+let numbersSum = sumOfNumbersFromString (0, Seq.toList (day1Input))
 // answer
 Console.WriteLine(sprintf "%A" numbersSum)
