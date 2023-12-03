@@ -14,9 +14,9 @@ let getNumber (line: string) =
     let matchedNumber = Regex.Matches(line, @"(\d+)")
     int (matchedNumber[0].Value)
 
-let rec calculateIfPossible (g: list<string>, isPossible: bool) =
+let rec calculateIfGamePossible (g: list<string>, possible: bool) =
     match g with
-    | [] -> isPossible
+    | [] -> possible
     | h :: t ->
         let b = Regex.Matches(h, @"(\d+ blue)")
         let r = Regex.Matches(h, @"(\d+ red)")
@@ -24,7 +24,13 @@ let rec calculateIfPossible (g: list<string>, isPossible: bool) =
         let isBluePossible = if (b.Count > 0) then getNumber (b[0].Value) <= 14 else true
         let isRedPossible = if (r.Count > 0) then getNumber (r[0].Value) <= 12 else true
         let isGreenPossible = if (g.Count > 0) then getNumber (g[0].Value) <= 13 else true
-        calculateIfPossible (t, isPossible && isBluePossible && isRedPossible && isGreenPossible)
+        let isPossible = possible && isBluePossible && isRedPossible && isGreenPossible
+
+        if (isPossible) then
+            calculateIfGamePossible (t, isPossible)
+        else
+            calculateIfGamePossible ([], isPossible)
+
 
 
 let rec calculateMaxPossible (g: list<string>, rMax: int, gMax: int, bMax: int) =
@@ -43,7 +49,7 @@ let rec calculateMaxPossible (g: list<string>, rMax: int, gMax: int, bMax: int) 
         calculateMaxPossible (t, newRedMax, newGreenMax, newBlueMax)
 
 
-let rec calculateGames (lines: list<string>, idsSum, id: int) =
+let rec calculateGamesSum (lines: list<string>, idsSum, id: int) =
     match lines with
     | [] -> idsSum
     | h :: t ->
@@ -51,12 +57,12 @@ let rec calculateGames (lines: list<string>, idsSum, id: int) =
         // let partialSum = if (calculateIfPossible (games, true)) then id else 0
         let [ r, g, b ] = calculateMaxPossible (games, 1, 1, 1)
         let partialSum = r * g * b
-        calculateGames (t, idsSum + partialSum, id + 1)
+        calculateGamesSum (t, idsSum + partialSum, id + 1)
 
 
 
 
 
-let day = readLines ("./day-2.txt")
-let idsSum = calculateGames (Seq.toList (day), 0, 1)
-Console.WriteLine(sprintf "%A" idsSum)
+let dayInput = readLines ("./day-2.txt")
+let sum = calculateGamesSum (Seq.toList (dayInput), 0, 1)
+Console.WriteLine(sprintf "%A" sum)

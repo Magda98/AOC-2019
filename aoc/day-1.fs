@@ -25,7 +25,7 @@ let mapToNumber (stringNum: string) =
 
 let rec sumOfNumbersFromString (sum: int, list: list<string>) =
     let pattern = @"(\d)"
-    let numbersAllRegex = @"(\d|one|two|three|four|five|six|seven|eight|nine)"
+    let numbersAllRegex = @"(?=(\d|one|two|three|four|five|six|seven|eight|nine))"
 
     match list with
     | [] -> sum
@@ -39,8 +39,8 @@ let rec sumOfNumbersFromString (sum: int, list: list<string>) =
 
         // part two:
         let partialSum =
-            mapToNumber (foundStringDigits[0].Value) * 10
-            + mapToNumber (foundStringDigits[foundStringDigits.Count - 1].Value)
+            mapToNumber (foundStringDigits[0].Groups[1].Value) * 10
+            + mapToNumber (foundStringDigits[foundStringDigits.Count - 1].Groups[1].Value)
 
         sumOfNumbersFromString (partialSum + sum, t)
 

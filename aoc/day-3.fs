@@ -18,42 +18,52 @@ let rec to2dArray (list: list<string>, arr: array<array<char>>) =
         let newArray = Array.append arr charArr
         to2dArray (t, newArray)
 
-let chechIfValidNumber (m: Match, engineMap: array<array<char>>, lineIndex: int, len: int) =
-    let lenTemp = len - 1
+// number is valid when is adjacent to a symbol except `.` (period)
+let chechIfValidNumber (matchGroup: Match, engineMap: array<array<char>>, lineIndex: int, listLenght: int) =
+    let listMaxIndex = listLenght - 1
     let startLine = if (lineIndex = 0) then 0 else lineIndex - 1
-    let endLine = if (lineIndex = lenTemp) then lineIndex else lineIndex + 1
-    let startIndex = if (m.Index = 0) then 0 else m.Index - 1
+
+    let endLine =
+        if (lineIndex = listMaxIndex) then
+            lineIndex
+        else
+            lineIndex + 1
+
+    let startIndex = if (matchGroup.Index = 0) then 0 else matchGroup.Index - 1
 
     let endIndex =
-        if ((m.Index + m.Length - 1) = 139) then
+        if ((matchGroup.Index + matchGroup.Length - 1) = 139) then
             139
         else
-            m.Index + m.Length
+            matchGroup.Index + matchGroup.Length
 
     let indexArr = [| for i in startIndex..endIndex -> i |]
     let lineArr = [| for i in startLine..endLine -> i |]
-    let mutable isValid = false
 
-    for line in lineArr do
-        for index in indexArr do
-            if
-                (engineMap[line][index] <> '.'
-                 && Char.IsAsciiDigit(engineMap[line][index]) <> true)
-            then
-                isValid <- true
-                true
-            else
-                false
+    let isInvalid =
+        Array.forall
+            (fun line ->
+                Array.forall
+                    (fun index -> engineMap[line][index] = '.' || Char.IsAsciiDigit(engineMap[line][index]))
+                    indexArr)
+            lineArr
 
-    isValid
+    not isInvalid
 
-let rec calculateValidNumbersSum (m: list<Match>, engineMap: array<array<char>>, lineIndex: int, len: int, sum: int) =
+let rec calculateValidNumbersSum
+    (
+        m: list<Match>,
+        engineMap: array<array<char>>,
+        lineIndex: int,
+        listLength: int,
+        sum: int
+    ) =
     match m with
     | [] -> sum
     | h :: t ->
-        let isValid = chechIfValidNumber (h, engineMap, lineIndex, len)
+        let isValid = chechIfValidNumber (h, engineMap, lineIndex, listLength)
         let partialSum = if (isValid) then int (h.Value) else 0
-        calculateValidNumbersSum (t, engineMap, lineIndex, len, sum + partialSum)
+        calculateValidNumbersSum (t, engineMap, lineIndex, listLength, sum + partialSum)
 
 let rec caluclateEngineSum (list: list<string>, sum: int, engineMap: array<array<char>>, id: int, len: int) =
     match list with
@@ -68,9 +78,9 @@ let rec caluclateEngineSum (list: list<string>, sum: int, engineMap: array<array
 
 
 let dayInput = readLines ("./day-3.txt")
+let dayInputList = Seq.toList (dayInput)
 let engineMap = to2dArray (Seq.toList (dayInput), Array.empty)
 
-let sum =
-    caluclateEngineSum (Seq.toList (dayInput), 0, engineMap, 0, Seq.toList(dayInput).Length)
+let sum = caluclateEngineSum (dayInputList, 0, engineMap, 0, dayInputList.Length)
 
 Console.WriteLine(sprintf "%A" sum)
