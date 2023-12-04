@@ -19,7 +19,14 @@ let rec to2dArray (list: list<string>, arr: array<array<char>>) =
         to2dArray (t, newArray)
 
 // number is valid when is adjacent to a symbol except `.` (period)
-let chechIfValidNumber (matchGroup: Match, engineMap: array<array<char>>, lineIndex: int, listLenght: int) =
+let chechIfValidNumber
+    (
+        matchGroup: Match,
+        engineMap: array<array<char>>,
+        lineIndex: int,
+        listLenght: int,
+        lineLength: int
+    ) =
     let listMaxIndex = listLenght - 1
     let startLine = if (lineIndex = 0) then 0 else lineIndex - 1
 
@@ -32,8 +39,8 @@ let chechIfValidNumber (matchGroup: Match, engineMap: array<array<char>>, lineIn
     let startIndex = if (matchGroup.Index = 0) then 0 else matchGroup.Index - 1
 
     let endIndex =
-        if ((matchGroup.Index + matchGroup.Length - 1) = 139) then
-            139
+        if ((matchGroup.Index + matchGroup.Length - 1) = lineLength) then
+            lineLength
         else
             matchGroup.Index + matchGroup.Length
 
@@ -56,14 +63,15 @@ let rec calculateValidNumbersSum
         engineMap: array<array<char>>,
         lineIndex: int,
         listLength: int,
+        lineLength: int,
         sum: int
     ) =
     match m with
     | [] -> sum
     | h :: t ->
-        let isValid = chechIfValidNumber (h, engineMap, lineIndex, listLength)
+        let isValid = chechIfValidNumber (h, engineMap, lineIndex, listLength, lineLength)
         let partialSum = if (isValid) then int (h.Value) else 0
-        calculateValidNumbersSum (t, engineMap, lineIndex, listLength, sum + partialSum)
+        calculateValidNumbersSum (t, engineMap, lineIndex, listLength, lineLength, sum + partialSum)
 
 let rec caluclateEngineSum (list: list<string>, sum: int, engineMap: array<array<char>>, id: int, len: int) =
     match list with
@@ -72,7 +80,7 @@ let rec caluclateEngineSum (list: list<string>, sum: int, engineMap: array<array
         let numbersMatches = Regex.Matches(h, @"(\d+)") |> Seq.cast
 
         let lineSum =
-            calculateValidNumbersSum (Seq.toList (numbersMatches), engineMap, id, len, 0)
+            calculateValidNumbersSum (Seq.toList (numbersMatches), engineMap, id, len, h.Length - 1, 0)
 
         caluclateEngineSum (t, sum + lineSum, engineMap, id + 1, len)
 
