@@ -44,16 +44,50 @@ let rec sumList (maps: list<Map<char, int> * int * list<char>>) (sum: int) (idx:
     | [] -> sum
     | (c, v, s) :: t -> sumList t ((idx * v) + sum) (idx + 1)
 
-let cards =
+let cardsDay2 =
     [| 'A'; 'K'; 'Q'; 'T'; '9'; '8'; '7'; '6'; '5'; '4'; '3'; '2'; 'J' |]
+    |> Array.rev
+
+let cards =
+    [| 'A'; 'K'; 'Q'; 'J'; 'T'; '9'; '8'; '7'; '6'; '5'; '4'; '3'; '2' |]
     |> Array.rev
 
 
 let sorted =
     z
-    |> List.sortBy (fun (x, z, s) ->
-        let maxCardCount = x |> Map.toSeq |> Seq.map snd |> Seq.max
-        let joker = x.TryFind 'J'
+    |> List.sortBy (fun (cardMap, value, hand) ->
+        let sortByType = cardMap |> Map.toSeq |> Seq.map snd |> Seq.max
+
+        let countOfMax =
+            cardMap
+            |> Map.toSeq
+            |> Seq.map snd
+            |> Seq.filter (fun el -> el = sortByType)
+            |> Seq.length
+
+        let checkIfFullHouseOrTwoPairs =
+            if
+                ((sortByType = 3 && cardMap.Values.Contains(2))
+                 || (sortByType = 2 && countOfMax = 2))
+            then
+                1
+            else
+                0
+
+
+        let sortByFigure =
+            hand
+            |> List.toArray
+            |> Array.map (fun c -> cards |> Array.findIndex (fun q -> q = c))
+
+        (sortByType, checkIfFullHouseOrTwoPairs, sortByFigure))
+
+
+let sortedDay2 =
+    z
+    |> List.sortBy (fun (cardMap, value, hand) ->
+        let maxCardCount = cardMap |> Map.toSeq |> Seq.map snd |> Seq.max
+        let joker = cardMap.TryFind 'J'
 
         let jokersCount =
             match joker with
@@ -62,7 +96,7 @@ let sorted =
 
 
         let countOfMax =
-            x
+            cardMap
             |> Map.toSeq
             |> Seq.map snd
             |> Seq.filter (fun el -> el = maxCardCount)
@@ -73,14 +107,14 @@ let sorted =
             match (jokersCount, maxCardCount, countOfMax) with
             | j, m, _ when (j = 5) && (m = 5) -> 5
             | j, _, _ when (j = 4) -> 5
-            | j, _, _ when j = 3 -> if (x.Values.Contains(2)) then 5 else 4
+            | j, _, _ when j = 3 -> if (cardMap.Values.Contains(2)) then 5 else 4
             | j, m, c when j = 2 && m = 2 && c = 2 -> 4
             | j, m, _ when (j = m) -> m + 1
             | j, m, _ -> m + j
 
         let checkIfFullHouse =
             if
-                ((sortByType = 3 && jokersCount = 0 && x.Values.Contains(2))
+                ((sortByType = 3 && jokersCount = 0 && cardMap.Values.Contains(2))
                  || (sortByType = 3 && jokersCount = 1 && countOfMax = 2))
             then
                 1
@@ -95,12 +129,12 @@ let sorted =
 
 
         let sortByFigure =
-            s
+            hand
             |> List.toArray
-            |> Array.map (fun c -> cards |> Array.findIndex (fun q -> q = c))
+            |> Array.map (fun c -> cardsDay2 |> Array.findIndex (fun q -> q = c))
 
         (sortByType, checkIfFullHouse, checkIfTwoPairs, sortByFigure))
 
-let sum = sumList sorted 0 1
+let sum = sumList sortedDay2 0 1
 
 Console.WriteLine(sprintf "%A" sum)
