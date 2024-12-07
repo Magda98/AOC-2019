@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import fs from 'fs';
 import { sumBy, zip } from 'lodash-es';
 

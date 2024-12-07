@@ -1,7 +1,3 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable @typescript-eslint/comma-dangle */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-console */
 import fs from 'fs';
 
 const filepath = new URL('day6.txt', import.meta.url);

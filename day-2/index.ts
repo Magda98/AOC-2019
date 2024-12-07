@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-console */
 import fs from 'fs';
 import { sumBy } from 'lodash-es';
 

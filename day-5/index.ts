@@ -1,9 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-confusing-arrow */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable operator-linebreak */
-/* eslint-disable no-console */
 import fs from 'fs';
 import { sumBy } from 'lodash-es';
 
@@ -25,8 +19,7 @@ for (const orderRule of orderingRules) {
     const firstIndex = updates.findIndex((value) => value === firstPage);
     const secondIndex = updates.findIndex((value) => value === secondPage);
     if (firstIndex > -1 && secondIndex > -1 && secondIndex < firstIndex) {
-      validManualPages = validManualPages.map((value, innerIndex) =>
-        innerIndex !== index ? value : []);
+      validManualPages = validManualPages.map((value, innerIndex) => (innerIndex !== index ? value : []));
     }
   }
 }
